@@ -17,12 +17,14 @@
 
 class Train
 
-	attr_accessor :speed, :type, :wagons_quantity, :train_number
+	attr_accessor :speed, :type,  :train_number, :route, :number
 
-	def initialize (train_number, type = 'pass', speed=0, wagons_quantity)
+	def initialize (number, type, wagons_quantity=0)
 		@type = type
-		@speed = speed
+		@speed = 0
 		@wagons_quantity = wagons_quantity
+		@number = number
+    @train = {number => @type}
 	end
 
 
@@ -31,26 +33,52 @@ class Train
 	end
 
 	def brake
-		@speed = 0
-		puts "Train has stoped"
+		if speed_zero?
+			puts "Train has stoped"
+		end
 	end
 
 	def show_wagon_quantity
-		puts "There is #{@wagons_quantity} wagons in train"
+		puts "There is #{@wagons_quantity} wagons in train #{@number}"
 	end
 
 	def add_wagon
-		if @speed == 0
+		if speed_zero?
 			@wagons_quantity += 1
 			show_wagon_quantity
 		end
 	end
 
 	def remove_wagon
-		if @speed == 0
+		if speed_zero?
 			@wagons_quantity -= 1
 			show_wagon_quantity
 		end
 
 	end
+
+	def take_route(station)
+		@station = station
+		puts "Train"
+	end
+
+	def move(station)
+    if @route.include?(station)
+      @station = station
+      puts "Поезд №#{@number} приехал на с станцию #{@station}"
+    else
+      puts "Такой станции нет в маршруте"
+    end
+  end
+
+  def list
+    return {@number => @type}
+  end
+
+  private
+
+  def speed_zero?
+    @speed.zero?
+  end
+
 end
